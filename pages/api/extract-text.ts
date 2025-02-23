@@ -23,7 +23,7 @@ interface ErrorResponse {
 // Helper function to parse multipart form data
 const parseMultipartForm = async (req: NextApiRequest): Promise<Buffer> => {
   return new Promise((resolve, reject) => {
-    let chunks: Buffer[] = [];
+    const chunks: Buffer[] = [];
 
     req.on("data", (chunk) => {
       chunks.push(chunk);
@@ -59,8 +59,9 @@ async function extractTextWithOCR(pdfBuffer: Buffer): Promise<string> {
     await fs.writeFile(tempPdfPath, pdfBuffer);
 
     // Create converter instance
-    const converter = fromPath(tempPdfPath, options);
-    const pageToConvertAsImage = await converter.bulk(-1, {
+    const convert = fromPath(tempPdfPath, options);
+    console.log(convert);
+    const pageToConvertAsImage = await convert.bulk(-1, {
       responseType: "buffer",
     });
 
@@ -155,3 +156,11 @@ export default async function handler(
     });
   }
 }
+
+// .eslintrc.js
+module.exports = {
+  extends: ["next/core-web-vitals"],
+  rules: {
+    // Your custom rules
+  },
+};
